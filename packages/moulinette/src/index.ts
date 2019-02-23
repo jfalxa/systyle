@@ -8,7 +8,7 @@ export type Builder = (moulinette: Moulinette) => Component
 export type Extension<E extends System> = (system: E) => void
 
 export interface System extends Component {
-  moulinette: Moulinette
+  compute: Moulinette
   with(...declarations: Declaration[]): this
   extend<E extends this>(extension: Extension<E>): E
 }
@@ -37,7 +37,7 @@ function createSystem<S extends System>(
   const moulinette = compile(moulinettes)
   const System = builder(moulinette) as S
 
-  System.moulinette = moulinette
+  System.compute = moulinette
 
   System.with = (...declarations) =>
     createSystem(builder, [...moulinettes, ...declarations.map(moulinettify)], extensions) // prettier-ignore
