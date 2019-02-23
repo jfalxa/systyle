@@ -5,14 +5,16 @@ export type Moulinette = (props: Props) => Props | null | void
 export type Declaration = Props | Moulinette
 export type Component = (props: Props, ...rest: any[]) => any
 export type Builder = (moulinette: Moulinette) => Component
+export type Extension<E extends System> = (system: E) => void
 
 export interface System extends Component {
   moulinette: Moulinette
   with(...declarations: Declaration[]): this
+  extend<E extends this>(extension: Extension<E>): E
 }
 
 function isProps(value: any): value is Props {
-  return typeof value === 'object'
+  return value !== null && typeof value === 'object'
 }
 
 function compile(moulinettes: Moulinette[]): Moulinette {
@@ -29,7 +31,8 @@ function moulinettify(declaration: Declaration): Moulinette {
 
 function createSystem<S extends System>(
   builder: Builder,
-  moulinettes: Moulinette[] = []
+  moulinettes: Moulinette[] = [],
+  extensions: Extension<any>[] = []
 ) {
   const moulinette = compile(moulinettes)
   const System = builder(moulinette) as S
@@ -37,7 +40,12 @@ function createSystem<S extends System>(
   System.moulinette = moulinette
 
   System.with = (...declarations) =>
-    createSystem(builder, [...moulinettes, ...declarations.map(moulinettify)]) // prettier-ignore
+    createSystem(builder, [...moulinettes, ...declarations.map(moulinettify)], extensions) // prettier-ignore
+
+  System.extend = extension =>
+    createSystem(builder, moulinettes, [...extensions, extension])
+
+  extensions.forEach(extend => extend(System))
 
   return System
 }
