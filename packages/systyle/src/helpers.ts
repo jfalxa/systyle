@@ -1,6 +1,12 @@
 import { Props } from 'moulinette'
 
-export function partitionBy(props: Props, by: (v: any, k: string) => boolean) {
+type By = (value: any, key: string) => boolean
+
+export function isEmpty(value: any) {
+  return value === null || (typeof value === 'object' && Object.keys(value).length === 0) // prettier-ignore
+}
+
+export function partition(props: Props, by: By) {
   const match: Props = {}
   const rest: Props = {}
 
@@ -15,4 +21,12 @@ export function partitionBy(props: Props, by: (v: any, k: string) => boolean) {
   })
 
   return [match, rest]
+}
+
+export function pick(props: Props, by: By) {
+  return partition(props, by)[0]
+}
+
+export function compact(props: Props) {
+  return partition(props, isEmpty)[1]
 }
