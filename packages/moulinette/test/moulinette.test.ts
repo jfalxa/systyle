@@ -1,7 +1,9 @@
-import createSystem from '../src'
+import { createSystem, Builder } from '../src'
+
+const sys = (b: Builder = v => v) => createSystem(b)
 
 it('creates a basic system', () => {
-  const System = createSystem()
+  const System = sys()
 
   expect(System({})).toEqual({})
   expect(System({ value: 0 })).toEqual({ value: 0 })
@@ -10,16 +12,17 @@ it('creates a basic system', () => {
 })
 
 it('creates a system with custom builder', () => {
-  const System = createSystem(() => () => ({ custom: true }))
+  const System = sys(() => () => ({ custom: true }))
 
   expect(System({})).toEqual({ custom: true })
   expect(System({ value: 0 })).toEqual({ custom: true })
 })
 
 it('attaches defaults to a system', () => {
-  const System = createSystem().with({ common: true })
+  const System = sys().with({ common: true })
   const SystemA = System.with({ a: true })
   const SystemB = System.with({ b: true })
+  const SystemCD = System.with({ c: true }, { d: true })
 
   expect(System({})).toEqual({ common: true })
   expect(SystemA({})).toEqual({ common: true, a: true })
@@ -27,7 +30,7 @@ it('attaches defaults to a system', () => {
 })
 
 it('attaches a moulinette to a system', () => {
-  const System = createSystem().with(({ input, ...props }) => ({
+  const System = sys().with(({ input, ...props }) => ({
     ...props,
     output: input
   }))

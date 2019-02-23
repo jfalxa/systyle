@@ -1,22 +1,14 @@
 const merge = require('deepmerge')
 
-type Props = { [key: string]: any }
-type Moulinette = (props: Props) => Props | null | void
-type Declaration = Props | Moulinette
-type Component = (props: Props, ...rest: any[]) => any
-type Builder = (moulinette: Moulinette) => Component
+export type Props = { [key: string]: any }
+export type Moulinette = (props: Props) => Props | null | void
+export type Declaration = Props | Moulinette
+export type Component = (props: Props, ...rest: any[]) => any
+export type Builder = (moulinette: Moulinette) => Component
 
-interface System extends Component {
+export interface System extends Component {
   moulinette: Moulinette
-  with(declaration: Declaration): this
-}
-
-function identity<T>(value: T) {
-  return value
-}
-
-function isMoulinette(value: any): value is Moulinette {
-  return typeof value === 'function'
+  with(...declarations: Declaration[]): this
 }
 
 function isProps(value: any): value is Props {
@@ -32,22 +24,23 @@ function compile(moulinettes: Moulinette[]): Moulinette {
 }
 
 function moulinettify(declaration: Declaration): Moulinette {
-  return isMoulinette(declaration)
-    ? declaration
-    : props => merge(declaration, props)
+  return isProps(declaration) ? props => merge(declaration, props) : declaration
 }
 
-export default function createSystem(
-  builder: Builder = identity,
+function createSystem<S extends System>(
+  builder: Builder,
   moulinettes: Moulinette[] = []
 ) {
   const moulinette = compile(moulinettes)
-  const System = builder(moulinette) as System
+  const System = builder(moulinette) as S
 
   System.moulinette = moulinette
 
-  System.with = (declaration: Declaration) =>
-    createSystem(builder, [...moulinettes, moulinettify(declaration)])
+  System.with = (...declarations) =>
+    createSystem(builder, [...moulinettes, ...declarations.map(moulinettify)]) // prettier-ignore
 
   return System
 }
+
+export { createSystem, merge }
+export default createSystem
