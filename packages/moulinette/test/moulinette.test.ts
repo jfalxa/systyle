@@ -69,20 +69,25 @@ it('attaches a sequence of moulinettes to a system', () => {
     return { output: outputBuffer }
   }
 
-  const SystemA = sys().with(bufferToOutput, bufferToBuffer, inputToBuffer)
-
-  const SystemB = sys()
+  const SystemA = sys()
     .with(bufferToOutput)
     .with(bufferToBuffer)
     .with(inputToBuffer)
 
-  expect(SystemA({})).toEqual({})
-  expect(SystemA({ regular: true })).toEqual({})
-  expect(SystemA({ input: 'test' })).toEqual({ output: 'test' })
+  const SystemB = sys().with(bufferToOutput, bufferToBuffer, inputToBuffer)
+  const SystemC = sys().with([bufferToOutput, bufferToBuffer, inputToBuffer])
+  const SystemD = sys().with([bufferToOutput], bufferToBuffer, inputToBuffer)
+  const SystemE = sys().with([bufferToOutput, bufferToBuffer], inputToBuffer)
+  const SystemF = sys().with(bufferToOutput, [bufferToBuffer, inputToBuffer])
+  const SystemZ = sys().with([[[[[bufferToOutput]], [bufferToBuffer]], inputToBuffer]]) // prettier-ignore
 
-  expect(SystemB({})).toEqual({})
-  expect(SystemB({ regular: true })).toEqual({})
-  expect(SystemB({ input: 'test' })).toEqual({ output: 'test' })
+  const systems = [SystemA, SystemB, SystemC, SystemD, SystemE, SystemF, SystemZ] // prettier-ignore
+
+  systems.forEach(System => {
+    expect(System({})).toEqual({})
+    expect(System({ regular: true })).toEqual({})
+    expect(System({ input: 'test' })).toEqual({ output: 'test' })
+  })
 })
 
 it('can create an api to manage css', () => {
@@ -106,30 +111,11 @@ it('can create an api to manage css', () => {
   const BlueBox = Box.with({ background: 'blue' })
   const Title = Text.with({ as: 'h1', fontSize: 24 })
 
-  expect(Styled({ color: '#fff' })).toEqual({
-    as: 'div',
-    style: { color: '#fff' }
-  })
-
-  expect(Box({})).toEqual({
-    as: 'div',
-    style: { display: 'flex' }
-  })
-
-  expect(Text({})).toEqual({
-    as: 'span',
-    style: { fontFamily: 'mono', fontSize: 16 }
-  })
-
-  expect(BlueBox({})).toEqual({
-    as: 'div',
-    style: { display: 'flex', background: 'blue' }
-  })
-
-  expect(Title({})).toEqual({
-    as: 'h1',
-    style: { fontFamily: 'mono', fontSize: 24 }
-  })
+  expect(Styled({ color: '#fff' })).toEqual({ as: 'div', style: { color: '#fff' } }) // prettier-ignore
+  expect(Box({})).toEqual({ as: 'div', style: { display: 'flex' } }) // prettier-ignore
+  expect(Text({})).toEqual({ as: 'span', style: { fontFamily: 'mono', fontSize: 16 } }) // prettier-ignore
+  expect(BlueBox({})).toEqual({ as: 'div', style: { display: 'flex', background: 'blue' } }) // prettier-ignore
+  expect(Title({})).toEqual({ as: 'h1', style: { fontFamily: 'mono', fontSize: 24 } }) // prettier-ignore
 })
 
 it('ignores moulinettes that do not return objects', () => {

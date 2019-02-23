@@ -27,6 +27,7 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "deepmerge": "^3.2.0"
+    "deepmerge": "^3.2.0",
+    "flatten": "^1.0.2"
   }
 }
