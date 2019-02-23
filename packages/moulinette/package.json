@@ -1,0 +1,32 @@
+{
+  "name": "moulinette",
+  "version": "0.0.1",
+  "main": "lib/index.umd.js",
+  "module": "lib/index.esm.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -c -w",
+    "test": "jest",
+    "clean": "rimraf lib",
+    "prebuild": "npm run clean",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.5",
+    "jest": "^24.1.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.2.0",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-typescript2": "^0.19.2",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "deepmerge": "^3.2.0"
+  }
+}
