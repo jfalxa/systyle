@@ -23,10 +23,6 @@ export function partition(props: Props, by: By) {
   return [match, rest]
 }
 
-export function pick(props: Props, by: By) {
-  return partition(props, by)[0]
-}
-
 export function compact(props: Props) {
   return partition(props, isEmpty)[1]
 }

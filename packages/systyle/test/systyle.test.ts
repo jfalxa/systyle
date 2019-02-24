@@ -1,5 +1,5 @@
-import { pickCSS, createElement } from '../src'
-import { createSystem, Builder } from 'moulinette'
+import { pickCSS, createElement, extension, generateCSS } from '../src'
+import { createSystem, Builder, Props } from 'moulinette'
 
 const id: Builder = v => v
 
@@ -47,4 +47,23 @@ it('detects nested css rules', () => {
   expect(Styled({ '.class': style })).toEqual({ css: { '.class': style } })
   expect(Styled({ '#id': style })).toEqual({ css: { '#id': style } })
   expect(Styled({ regular: style })).toEqual({ regular: style })
+})
+
+it('can add css to a system with a template string', () => {
+  const Styled = createSystem(id).extend(extension)
+
+  const getter = (props: Props) => props.color
+
+  const A = Styled.css`display: flex;`
+  const B = A.css`color: ${getter};`
+  const C = B.css`background: blue;`
+
+  const display = [['display: flex;'], []]
+  const color = [['color: ', ';'], [getter]]
+  const background = [['background: blue;'], []]
+
+  expect(Styled({})).toEqual({})
+  expect(A({})).toEqual({ raw: [display] })
+  expect(B({})).toEqual({ raw: [display, color] })
+  expect(C({})).toEqual({ raw: [display, color, background] })
 })
