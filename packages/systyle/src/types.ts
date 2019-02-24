@@ -1,17 +1,20 @@
 import { Props, System } from 'moulinette'
 import { Interpolation } from 'emotion'
 
-export type By = (value: any, key: string) => boolean
+export type By = (value: any, key: string, props: Props) => boolean
 export type CSSTemplate = [TemplateStringsArray, Interpolation<Props>[]]
 
 export type CSSGenProps = Props & {
-  css?: Interpolation
-  raw?: CSSTemplate[]
+  css?: [CSSTemplate | Interpolation][]
   className?: string
 }
 
 export type ElementProps = Props & {
   as?: string | Function
+}
+
+export type ClassProps = Props & {
+  classNames?: string[]
 }
 
 export interface Styled extends System {

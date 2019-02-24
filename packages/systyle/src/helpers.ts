@@ -1,10 +1,12 @@
-import { Props, Moulinette } from 'moulinette'
-import { css as emotion } from 'emotion'
-
+import { Props } from 'moulinette'
 import { By, CSSTemplate } from './types'
 
 export function isEmpty(value: any) {
   return value === null || (typeof value === 'object' && Object.keys(value).length === 0) // prettier-ignore
+}
+
+export function isTemplate(value: any): value is CSSTemplate {
+  return Array.isArray(value) && Array.isArray(value[0]) && Array.isArray(value[1]) // prettier-ignore
 }
 
 export function partition(props: Props, by: By) {
@@ -14,7 +16,7 @@ export function partition(props: Props, by: By) {
   Object.keys(props).forEach(key => {
     const value = props[key]
 
-    if (by(value, key)) {
+    if (by(value, key, props)) {
       match[key] = value
     } else {
       rest[key] = value
@@ -28,16 +30,6 @@ export function compact(props: Props) {
   return partition(props, isEmpty)[1]
 }
 
-export function chunk(moulinette: Moulinette): Moulinette {
-  return props => ({ ...props, ...moulinette(props) })
-}
-
 export function computeArgs(args: CSSTemplate[1], props: Props) {
   return args.map((arg: any) => (typeof arg === 'function' ? arg(props) : arg))
-}
-
-export function template(raw: CSSTemplate[] = [], props: Props) {
-  return raw.map(([template, args]) =>
-    emotion(template, ...computeArgs(args, props))
-  )
 }
