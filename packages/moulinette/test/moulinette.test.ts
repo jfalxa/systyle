@@ -36,10 +36,10 @@ it('creates a system with custom builder', () => {
 })
 
 it('attaches defaults to a system', () => {
-  const System = sys().with({ common: true })
-  const SystemA = System.with({ a: true })
-  const SystemB = System.with({ b: true })
-  const SystemCD = System.with({ c: true }, { d: true })
+  const System = sys().use({ common: true })
+  const SystemA = System.use({ a: true })
+  const SystemB = System.use({ b: true })
+  const SystemCD = System.use({ c: true }, { d: true })
 
   expect(System({})).toEqual({ common: true })
   expect(SystemA({})).toEqual({ common: true, a: true })
@@ -48,7 +48,7 @@ it('attaches defaults to a system', () => {
 })
 
 it('attaches a moulinette to a system', () => {
-  const System = sys().with(({ input, ...props }) => ({ ...props, output: input })) // prettier-ignore
+  const System = sys().use(({ input, ...props }) => ({ ...props, output: input })) // prettier-ignore
 
   expect(System({})).toEqual({})
   expect(System({ regular: true })).toEqual({ regular: true })
@@ -70,16 +70,16 @@ it('attaches a sequence of moulinettes to a system', () => {
   }
 
   const SystemA = sys()
-    .with(bufferToOutput)
-    .with(bufferToBuffer)
-    .with(inputToBuffer)
+    .use(bufferToOutput)
+    .use(bufferToBuffer)
+    .use(inputToBuffer)
 
-  const SystemB = sys().with(bufferToOutput, bufferToBuffer, inputToBuffer)
-  const SystemC = sys().with([bufferToOutput, bufferToBuffer, inputToBuffer])
-  const SystemD = sys().with([bufferToOutput], bufferToBuffer, inputToBuffer)
-  const SystemE = sys().with([bufferToOutput, bufferToBuffer], inputToBuffer)
-  const SystemF = sys().with(bufferToOutput, [bufferToBuffer, inputToBuffer])
-  const SystemZ = sys().with([[[[[bufferToOutput]], [bufferToBuffer]], inputToBuffer]]) // prettier-ignore
+  const SystemB = sys().use(bufferToOutput, bufferToBuffer, inputToBuffer)
+  const SystemC = sys().use([bufferToOutput, bufferToBuffer, inputToBuffer])
+  const SystemD = sys().use([bufferToOutput], bufferToBuffer, inputToBuffer)
+  const SystemE = sys().use([bufferToOutput, bufferToBuffer], inputToBuffer)
+  const SystemF = sys().use(bufferToOutput, [bufferToBuffer, inputToBuffer])
+  const SystemZ = sys().use([[[[[bufferToOutput]], [bufferToBuffer]], inputToBuffer]]) // prettier-ignore
 
   const systems = [SystemA, SystemB, SystemC, SystemD, SystemE, SystemF, SystemZ] // prettier-ignore
 
@@ -96,7 +96,7 @@ it('can create an api to manage css', () => {
       ['display', 'fontFamily', 'fontSize', 'background', 'color'].includes(key)
     )
 
-  const Styled = sys().with(props => {
+  const Styled = sys().use(props => {
     const [style, regular] = pickStyle(props)
 
     return {
@@ -106,10 +106,10 @@ it('can create an api to manage css', () => {
     }
   })
 
-  const Box = Styled.with({ display: 'flex' })
-  const Text = Styled.with({ as: 'span', fontFamily: 'mono', fontSize: 16 })
-  const BlueBox = Box.with({ background: 'blue' })
-  const Title = Text.with({ as: 'h1', fontSize: 24 })
+  const Box = Styled.use({ display: 'flex' })
+  const Text = Styled.use({ as: 'span', fontFamily: 'mono', fontSize: 16 })
+  const BlueBox = Box.use({ background: 'blue' })
+  const Title = Text.use({ as: 'h1', fontSize: 24 })
 
   expect(Styled({ color: '#fff' })).toEqual({ as: 'div', style: { color: '#fff' } }) // prettier-ignore
   expect(Box({})).toEqual({ as: 'div', style: { display: 'flex' } }) // prettier-ignore
@@ -119,7 +119,7 @@ it('can create an api to manage css', () => {
 })
 
 it('ignores moulinettes that do not return objects', () => {
-  const System = sys().with(
+  const System = sys().use(
     props => ({ ...props, end: true }),
     ({ change, ...props }) => (change ? { ...props, middle: true } : null),
     { start: true }
@@ -130,7 +130,7 @@ it('ignores moulinettes that do not return objects', () => {
 })
 
 it('invokes a system moulinette statically', () => {
-  const System = sys().with(({ input }) => ({ output: input }))
+  const System = sys().use(({ input }) => ({ output: input }))
   expect(System.compute({ input: 'test' })).toEqual({ output: 'test' })
 })
 
@@ -143,7 +143,7 @@ it('extends a system', () => {
     Ext.ok = () => true
   })
 
-  const ExtChild = Ext.with({ nothing: null })
+  const ExtChild = Ext.use({ nothing: null })
 
   expect(Ext.ok()).toBeTruthy()
   expect(ExtChild.ok()).toBeTruthy()

@@ -6,7 +6,8 @@
     "moduleResolution": "node",
     "strict": true,
     "declaration": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"]
 }
