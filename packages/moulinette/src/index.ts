@@ -11,7 +11,8 @@ export interface Declarations extends Array<Declaration | Declarations> {}
 
 export interface System extends Component {
   compute: Moulinette
-  use(...declarations: Declarations): this
+  init(...declarations: Declarations): this
+  with(...declarations: Declarations): this
   extend<E extends this>(extension: Extension<E>): E
 }
 
@@ -31,19 +32,23 @@ function compile(moulinettes: Moulinette[]): Moulinette {
 
 function createSystem<S extends System>(
   builder: Builder,
-  moulinettes: Moulinette[] = [],
+  initializers: Moulinette[] = [],
+  reducers: Moulinette[] = [],
   extensions: Extension<any>[] = []
 ) {
-  const moulinette = compile(moulinettes)
+  const moulinette = compile([...reducers, ...initializers])
   const System = builder(moulinette) as S
 
   System.compute = moulinette
 
-  System.use = (...declarations) =>
-    createSystem(builder, [...moulinettes, ...flatten(declarations).map(moulinettify)], extensions) // prettier-ignore
+  System.init = (...declarations) =>
+    createSystem(builder, [...initializers, ...flatten(declarations).map(moulinettify)], reducers, extensions) // prettier-ignore
+
+  System.with = (...declarations) =>
+    createSystem(builder, initializers, [...reducers, ...flatten(declarations).map(moulinettify)], extensions) // prettier-ignore
 
   System.extend = extension =>
-    createSystem(builder, moulinettes, [...extensions, extension])
+    createSystem(builder, reducers, initializers, [...extensions, extension])
 
   extensions.forEach(extend => extend(System))
 
