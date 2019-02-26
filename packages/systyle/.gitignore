@@ -4,4 +4,3 @@ node_modules
 .vscode
 lib
 coverage
-test/__snapshots__
