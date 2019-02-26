@@ -1,4 +1,5 @@
-import { createSystem, Builder, System, Props, merge } from '../src'
+import { Builder, System, Props } from '../src/types'
+import { createSystem, merge } from '../src'
 
 const sys = (b: Builder = v => v) => createSystem(b)
 
@@ -147,29 +148,4 @@ it('extends a system', () => {
 
   expect(Ext.ok()).toBeTruthy()
   expect(ExtChild.ok()).toBeTruthy()
-})
-
-it('adds initializers', () => {
-  const A = sys()
-    .init(props => ({ ...props, enriched: true }))
-    .with(props => ({ ...props, data: props.enriched ? 'ok' : 'ko' }))
-
-  const B = sys()
-    .with(props => ({ ...props, data: props.enriched ? 'ok' : 'ko' }))
-    .init(props => ({ ...props, enriched: true }))
-
-  const C = sys()
-    .init({ a: 0 }, { a: 1 })
-    .with({ a: 3 })
-
-  const D = sys()
-    .init({ a: 0 })
-    .with({ a: 1, ok: false })
-    .init({ a: 2 })
-    .with({ a: 3, ok: true })
-
-  expect(A({})).toEqual({ enriched: true, data: 'ok' })
-  expect(B({})).toEqual({ enriched: true, data: 'ok' })
-  expect(C({})).toEqual({ a: 1 })
-  expect(D({})).toEqual({ a: 2, ok: true })
 })

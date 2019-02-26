@@ -12,6 +12,8 @@ export default {
     { file: pkg.module, format: 'es' }
   ],
 
+  external: ['tslib'],
+
   plugins: [
     resolve(),
     commonjs({ include: 'node_modules/**' }),
