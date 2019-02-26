@@ -1,30 +1,32 @@
-import { Moulinette, System, Builder, Extension } from './types'
-import { merge, flatten, apply, moulinettify } from './utils'
-
-export function compile(moulinettes: Moulinette[]): Moulinette {
-  return input => moulinettes.reduceRight(apply, input)
-}
+import { Moulinette, System, Builder, Extension, Wrapper } from './types'
+import { merge, flatten, compose, moulinettify } from './utils'
 
 export function createSystem<S extends System>(
   builder: Builder,
   moulinettes: Moulinette[] = [],
+  wrappers: Wrapper[] = [],
   extensions: Extension<any>[] = []
 ) {
-  const moulinette = compile(moulinettes)
-  const System = builder(moulinette) as S
+  const moulinette: Moulinette = compose(moulinettes)
+  const wrap: Wrapper = compose(wrappers)
+
+  const System = wrap(builder(moulinette)) as S
 
   System.compute = moulinette
 
-  System.with = (...declarations) =>
-    createSystem(builder, [...moulinettes, ...flatten(declarations).map(moulinettify)], extensions) // prettier-ignore
+  System.with = (...extras) =>
+    createSystem(builder, [...moulinettes, ...flatten(extras).map(moulinettify)], wrappers, extensions) // prettier-ignore
+
+  System.wrap = (...extras) =>
+    createSystem(builder, moulinettes, [...wrappers, ...extras], extensions)
 
   System.extend = extension =>
-    createSystem(builder, moulinettes, [...extensions, extension])
+    createSystem(builder, moulinettes, wrappers, [...extensions, extension])
 
   extensions.forEach(extend => extend(System))
 
   return System
 }
 
-export { merge }
+export { compose, merge }
 export default createSystem

@@ -1,4 +1,4 @@
-import { Builder, System, Props } from '../src/types'
+import { Builder, System, Props, Wrapper } from '../src/types'
 import { createSystem, merge } from '../src'
 
 const sys = (b: Builder = v => v) => createSystem(b)
@@ -148,4 +148,18 @@ it('extends a system', () => {
 
   expect(Ext.ok()).toBeTruthy()
   expect(ExtChild.ok()).toBeTruthy()
+})
+
+it('wraps as system with functions', () => {
+  const theme = { spacing: 8 }
+
+  const withTheme: Wrapper = Component => props =>
+    Component({ ...props, theme: merge(theme, props.theme || {}) })
+
+  const A = sys().wrap(withTheme)
+  const B = A.with({ other: true })
+
+  expect(A({})).toEqual({ theme })
+  expect(B({})).toEqual({ theme, other: true })
+  expect(B({ theme: { fonts: { M: 16 }}})).toEqual({ other: true, theme: { spacing: 8, fonts: { M: 16 } } }) // prettier-ignore
 })

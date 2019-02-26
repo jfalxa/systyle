@@ -1,5 +1,5 @@
 import { Props } from 'moulinette/lib/types'
-import { compile } from 'moulinette'
+import { compose } from 'moulinette'
 
 import { Theme, By } from '../types'
 import { isCSS, replace } from '../helpers'
@@ -49,4 +49,4 @@ export const colors = replaceCSS((value, key, props) => {
   }
 })
 
-export const applyTheme = compile([spacing, fonts, sizes, colors])
+export const applyTheme = compose([spacing, fonts, sizes, colors])

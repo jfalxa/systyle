@@ -1,5 +1,5 @@
 import { Props } from 'moulinette/lib/types'
-import { compile } from 'moulinette'
+import { compose } from 'moulinette'
 
 import { aliases } from './aliases'
 import { applyTheme } from './theme'
@@ -19,4 +19,4 @@ export function extractCSS(input: Props) {
   return props
 }
 
-export const compileCSS = compile([extractCSS, applyTheme, aliases])
+export const compileCSS = compose([extractCSS, applyTheme, aliases])
