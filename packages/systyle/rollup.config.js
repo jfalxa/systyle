@@ -12,7 +12,7 @@ export default {
     { file: pkg.module, format: 'es' }
   ],
 
-  // external: ['emotion'],
+  external: ['tslib'],
 
   plugins: [
     resolve(),

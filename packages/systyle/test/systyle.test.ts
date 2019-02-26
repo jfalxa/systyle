@@ -1,10 +1,18 @@
-import { createSystem, Builder, Props } from 'moulinette'
-import { groupCSS, createElement, extension, generateCSS } from '../src'
+import './fake-body-style'
 
-const id: Builder = v => v
+import { Builder, Props } from 'moulinette/lib/types'
+import { createSystem } from 'moulinette'
+
+import { extension } from '../src'
+import { extractCSS } from '../src/moulinettes/css'
+import { createElement } from '../src/moulinettes/element'
+import { applyTheme } from '../src/moulinettes/theme'
+import { aliases } from '../src/moulinettes/aliases'
+
+const sys: Builder = v => v
 
 it('creates a styled system', () => {
-  const Styled = createSystem(id).with(groupCSS)
+  const Styled = createSystem(sys).with(extractCSS)
 
   expect(Styled({})).toEqual({})
   expect(Styled({ regular: true })).toEqual({ regular: true })
@@ -14,7 +22,7 @@ it('creates a styled system', () => {
 })
 
 it('removes css with void values', () => {
-  const Styled = createSystem(id).with(groupCSS)
+  const Styled = createSystem(sys).with(extractCSS)
   const A = Styled.with({ color: 'red' })
   const B = A.with({ color: null })
 
@@ -24,7 +32,7 @@ it('removes css with void values', () => {
 })
 
 it('creates variations of a styled system', () => {
-  const Styled = createSystem(id).with(createElement, groupCSS)
+  const Styled = createSystem(sys).with(createElement, extractCSS)
 
   const Box = Styled.with({ display: 'flex' })
   const Text = Styled.with({ as: 'span', fontFamily: 'mono', fontSize: 16 })
@@ -39,7 +47,7 @@ it('creates variations of a styled system', () => {
 })
 
 it('detects nested css rules', () => {
-  const Styled = createSystem(id).with(groupCSS)
+  const Styled = createSystem(sys).with(extractCSS)
   const style = { color: 'red' }
 
   expect(Styled({ ':hover': style })).toEqual({ css: [{ ':hover': style }] })
@@ -50,39 +58,73 @@ it('detects nested css rules', () => {
 })
 
 it('can add css to a system with a template string', () => {
-  const Styled = createSystem(id).extend(extension)
+  const Styled = createSystem(sys)
+    .extend(extension)
+    .with(extractCSS)
 
-  const getter = (props: Props) => props.color
+  const t = 'color: red;'
+  const tt = 'background: blue;'
+  const o = { width: '10px' }
+  const oo = { height: '20px' }
 
-  const A = Styled.css`display: flex;`
-  const B = A.css`color: ${getter};`
-  const C = B.css`background: blue;`
-  const D = A.with({ color: 'red' }, { background: 'yellow' }).css`border: none;` // prettier-ignore
+  const getter = (props: Props) => props.c
 
-  const display = [['display: flex;'], []]
-  const color = [['color: ', ';'], [getter]]
-  const background = [['background: blue;'], []]
-  const border = [['border: none;'], []]
+  const O = Styled.with(o)
+  const T = Styled.css`${t}`
+  const O_T = O.css`${t}`
+  const T_O = T.with(o)
+  const T_T = T.css`${tt}`
+  const O_O = O.with(oo)
+  const T_O_T = T_O.css`${tt}`
+  const O_T_O = O_T.with(oo)
+  const T_O_O_T = T_O.with(oo).css`${tt}`
+
+  const Weird = Styled.css`${t}`
+    .with(o)
+    .with(({ test, ...props }) => ({ ...props, background: test })).css`${tt}`
 
   expect(Styled({})).toEqual({})
-  expect(A({})).toEqual({ css: [display] })
-  expect(B({})).toEqual({ css: [display, color] })
-  expect(C({})).toEqual({ css: [display, color, background] })
-  expect(D({})).toEqual({ css: [display, { color: 'red', background: 'yellow' }, border] }) // prettier-ignore
+  expect(Styled(o)).toEqual({ css: [o] })
+  expect(O({})).toEqual({ css: [o] })
+  expect(T({})).toEqual({ css: [t] })
+  expect(O({ css: [t] })).toEqual({ css: [o, t] })
+  expect(T({ css: [o] })).toEqual({ css: [t, o] })
+  expect(O_T({})).toEqual({ css: [o, t] })
+  expect(T_O({})).toEqual({ css: [t, o] })
+  expect(T_T({})).toEqual({ css: [t, tt] })
+  expect(O_O({})).toEqual({ css: [{ ...o, ...oo }] })
+  expect(T_O_T({})).toEqual({ css: [t, o, tt] })
+  expect(O_T_O({})).toEqual({ css: [o, t, oo] })
+  expect(T_O_O_T({})).toEqual({ css: [t, { ...o, ...oo }, tt] })
+  expect(Weird({ test: 'red' })).toEqual({ css: [t, { ...o, background: 'red'}, tt]}) // prettier-ignore
 })
 
-it('generates css respecting the order in which it was defined', () => {
-  const Styled = createSystem(id)
-    .with(generateCSS, groupCSS)
-    .extend(extension).css`
-      display: flex;
-    `
-    .with({ color: 'red' })
-    .with({ cursor: 'pointer' })
-    .with({ background: 'yellow' }).css`
-      border: none; 
-      background: purple;
-    `
+it('uses theme config', () => {
+  const theme = {
+    spacing: 8,
+    fonts: { custom: 'my-font' },
+    sizes: { M: '16px' },
+    colors: { main: 'red' }
+  }
 
-  expect(Styled({}).classList).toHaveLength(3)
+  const injectTheme: Builder = moulinette => input => {
+    const { theme: _ = null, ...props } = moulinette({ ...input, theme }) || {}
+    return props
+  }
+
+  const Styled = createSystem(injectTheme).with(applyTheme)
+
+  expect(Styled({ marginTop: 1 })).toEqual({ marginTop: 8 })
+  expect(Styled({ fontFamily: 'custom' })).toEqual({ fontFamily: 'my-font' })
+  expect(Styled({ fontSize: 'M' })).toEqual({ fontSize: '16px' })
+  expect(Styled({ color: 'main' })).toEqual({ color: 'red' })
+  expect(Styled({ ':hover': { color: 'main' } })).toEqual({ ':hover': { color: 'red' } }) // prettier-ignore
+})
+
+it('renames some props', () => {
+  const Styled = createSystem(sys).with(aliases)
+
+  expect(Styled({ bg: 'red' })).toEqual({ backgroundColor: 'red' })
+  expect(Styled({ mt: 1 })).toEqual({ marginTop: 1 })
+  expect(Styled({ size: 'big' })).toEqual({ fontSize: 'big' })
 })

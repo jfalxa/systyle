@@ -1,10 +1,6 @@
-const RULE_RX = /^(\@|\:|\#|\.)/
-
-export function isCSSProperty(_: any, key: string) {
-  return RULE_RX.test(key) || cssProperties[key] === true
-}
-
-export const cssProperties: { [key: string]: boolean } = {
+global.document = global.document || {}
+global.document.body = global.document.body || {}
+global.document.body.style = {
   alignContent: true,
   alignItems: true,
   alignSelf: true,
