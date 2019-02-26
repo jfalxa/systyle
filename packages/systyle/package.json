@@ -1,6 +1,6 @@
 {
   "name": "systyle",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
   "typings": "lib/index.d.ts",
@@ -27,7 +27,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
-    "tslib": "^1.9.3",
-    "moulinette": "^0.0.1"
+    "moulinette": "^1.0.0",
+    "tslib": "^1.9.3"
   }
 }
