@@ -1,0 +1,10 @@
+{
+  "name": "moulinettes",
+  "version": "0.0.0",
+  "description": "mono repo of moulinette",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^3.13.0"
+  }
+}
