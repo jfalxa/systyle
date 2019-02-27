@@ -54,14 +54,20 @@ export function replace(by: By) {
   return _replace
 }
 
-export function rename(aliases: { [key: string]: string }) {
+export function rename(aliases: { [key: string]: string | string[] }) {
   const _rename = (props: Props) => {
     const renamed: Props = {}
 
     Object.keys(props).forEach(key => {
       const value = props[key]
       const alias = key in aliases ? aliases[key] : key
-      renamed[alias] = isObject(value) ? _rename(value) : value
+      const renamedValue = isObject(value) ? _rename(value) : value
+
+      if (Array.isArray(alias)) {
+        alias.forEach(aliasKey => (renamed[aliasKey] = renamedValue))
+      } else {
+        renamed[alias] = renamedValue
+      }
     })
 
     return renamed

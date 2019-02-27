@@ -1,7 +1,8 @@
 import { Props, System, Moulinette } from 'moulinette/lib/types'
 
 export type By = (value: any, key: string, context: Props) => any
-export type CSSTemplate = [TemplateStringsArray, any[]]
+export type TemplateArg = string | number | ((props: Props) => string | number)
+export type CSSTemplate = [TemplateStringsArray, TemplateArg[]]
 
 export interface Theme {
   spacing: number

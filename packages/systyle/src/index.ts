@@ -1,11 +1,13 @@
 import { Builder } from 'moulinette/lib/types'
-import { createSystem } from 'moulinette'
+import { createSystem, compose } from 'moulinette'
 
 import { Styled } from './types'
 import { compileCSS } from './moulinettes/css'
 import { addTemplate } from './moulinettes/template'
 import { createElement } from './moulinettes/element'
 import { addAnimation, combineAnimations } from './moulinettes/animations'
+
+export const systyle = compose([createElement, compileCSS, combineAnimations])
 
 export function extension(Styled: Styled) {
   Styled.as = type => Styled.with({ as: type })
@@ -17,9 +19,7 @@ export function extension(Styled: Styled) {
 }
 
 export function createStyled(builder: Builder): Styled {
-  return createSystem(builder)
-    .extend(extension)
-    .with(createElement, compileCSS, combineAnimations)
+  return createSystem(builder).extend(extension)
 }
 
 export default createStyled

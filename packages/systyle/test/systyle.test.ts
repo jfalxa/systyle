@@ -67,8 +67,6 @@ it('can add css to a system with a template string', () => {
   const o = { width: '10px' }
   const oo = { height: '20px' }
 
-  const getter = (props: Props) => props.c
-
   const O = Styled.with(o)
   const T = Styled.css`${t}`
   const O_T = O.css`${t}`
@@ -82,6 +80,8 @@ it('can add css to a system with a template string', () => {
   const Weird = Styled.css`${t}`
     .with(o)
     .with(({ test, ...props }) => ({ ...props, background: test })).css`${tt}`
+
+  const Prop = Styled.css`border: ${p => p.myBorder || 'none'};`
 
   expect(Styled({})).toEqual({})
   expect(Styled(o)).toEqual({ css: [o] })
@@ -97,6 +97,8 @@ it('can add css to a system with a template string', () => {
   expect(O_T_O({})).toEqual({ css: [o, t, oo] })
   expect(T_O_O_T({})).toEqual({ css: [t, { ...o, ...oo }, tt] })
   expect(Weird({ test: 'red' })).toEqual({ css: [t, { ...o, background: 'red'}, tt]}) // prettier-ignore
+  expect(Prop({})).toEqual({ css: ['border: none;'] })
+  expect(Prop({ myBorder: '1px solid black' })).toEqual({ myBorder: '1px solid black', css: ['border: 1px solid black;'] }) // prettier-ignore
 })
 
 it('uses theme config', () => {
@@ -127,4 +129,6 @@ it('renames some props', () => {
   expect(Styled({ bg: 'red' })).toEqual({ backgroundColor: 'red' })
   expect(Styled({ mt: 1 })).toEqual({ marginTop: 1 })
   expect(Styled({ size: 'big' })).toEqual({ fontSize: 'big' })
+  expect(Styled({ b: 'none' })).toEqual({ border: 'none' })
+  expect(Styled({ px: 2 })).toEqual({ paddingLeft: 2, paddingRight: 2 })
 })
