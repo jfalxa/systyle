@@ -6,6 +6,7 @@ import { extractCSS } from '../src/moulinettes/css'
 import { createElement } from '../src/moulinettes/element'
 import { applyTheme } from '../src/moulinettes/theme'
 import { aliases } from '../src/moulinettes/aliases'
+import { responsive, mediaQuery } from '../src/moulinettes/responsive'
 import { StyledSystem } from '../src/types'
 
 type Component = (props: Props) => any
@@ -131,4 +132,37 @@ it('renames some props', () => {
   expect(Styled({ size: 'big' })).toEqual({ fontSize: 'big' })
   expect(Styled({ b: 'none' })).toEqual({ border: 'none' })
   expect(Styled({ px: 2 })).toEqual({ paddingLeft: 2, paddingRight: 2 })
+})
+
+it('deals with responsive props', () => {
+  const bps = {
+    mobile: 0,
+    tablet: 600,
+    desktop: 1000
+  }
+
+  const theme = {
+    breakpoints: bps
+  }
+
+  const Styled = createSystem(sys).with(
+    ({ theme, ...props }) => props,
+    responsive,
+    { theme }
+  )
+
+  expect(Styled({ bg: { mobile: 'red' } })).toEqual({
+    [mediaQuery('0')]: { bg: 'red' }
+  })
+
+  expect(
+    Styled({
+      a: { mobile: 'red', tablet: 'yellow' },
+      b: { mobile: 'green', desktop: 'cyan' }
+    })
+  ).toEqual({
+    [mediaQuery('0')]: { a: 'red', b: 'green' },
+    [mediaQuery('600')]: { a: 'yellow' },
+    [mediaQuery('1000')]: { b: 'cyan' }
+  })
 })

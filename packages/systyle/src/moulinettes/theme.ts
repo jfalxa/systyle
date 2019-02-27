@@ -4,7 +4,7 @@ import { compose } from 'moulinette'
 import { Theme, By } from '../types'
 import { isCSS, replace } from '../helpers'
 
-function theme(props: Props, category: keyof Theme, key?: string) {
+export function theme(props: Props, category: keyof Theme, key?: string) {
   if (!('theme' in props) || !(category in props.theme)) return key
 
   const values = props.theme[category]

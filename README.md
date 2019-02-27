@@ -1,6 +1,6 @@
 # Systyle
 
-A thin layer on top of your components to quickly build a design system with emotion.
+A thin layer on top of your components to quickly build design systems with `emotion`.
 
 ## Installation
 
@@ -381,4 +381,38 @@ const Title = Styled.as('h1').with({ font: 'header', size: 'L', color: 'primary'
 
 // creates a div with padding = '8px 16px', border = '1px solid black'
 const Box = Styled.with({ px: 2, py: 1, b: '1px solid black' })
+```
+
+## Responsive props
+
+In your theme, you can define a set of breakpoints indexed by a unique name. You can specify 3 kinds of values for your breakpoints:
+
+- full media query: will be used as is
+- number: will generate `@media screen and (min-width: <number>px)`
+- string: will generate `@media screen and (min-width: <string>)`
+
+```JS
+const theme = {
+  breakpoints: {
+    mobile: 0,
+    tablet: 600,
+    desktop: 1200
+  }
+}
+```
+
+With the above config injected in your styled components, you can now also use objects as values for your styling props. If their keys match the ones in `theme.breakpoints`, they will be converted to media queries and added to the CSS of the component.
+
+```JS
+const Reponsive = Styled.with({
+  width: {
+    mobile: '100%',
+    tablet: '66%',
+    desktop: '50%'
+  },
+
+  background: {
+    mobile: '#eee'
+  }
+})
 ```

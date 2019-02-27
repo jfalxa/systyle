@@ -3,6 +3,7 @@ import { compose } from 'moulinette'
 
 import { aliases } from './aliases'
 import { applyTheme } from './theme'
+import { responsive } from './responsive'
 import { partition, compact, isEmpty, isCSS } from '../helpers'
 
 const partitionCSS = partition(isCSS)
@@ -19,4 +20,4 @@ export function extractCSS(input: Props) {
   return props
 }
 
-export const compileCSS = compose([extractCSS, applyTheme, aliases])
+export const compileCSS = compose([extractCSS, applyTheme, responsive, aliases])
