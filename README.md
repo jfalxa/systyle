@@ -84,6 +84,28 @@ const HoverRed = Styled.with({
 })
 ```
 
+Every new kind of styled component gets a unique class name so you can use them as a key in the styling of other components:
+
+```JS
+const Text = Styled.as('span')
+const Title = Text.as('h1')
+
+const TextContainer = Styled.with({
+  [Text]: {
+    background: 'red',
+    color: 'white'
+  }
+})
+
+// Text below will be written in white on a red background
+// Title was created from Text, but it doesn't have the same unique class
+// => the Text styling won't apply to it.
+<TextContainer>
+  <Title>title</Title>
+  <Text>some text</Text>
+</TextContainer>
+```
+
 ## Changing the rendered component
 
 In case you'd like to set which element will be rendered by a systyle component, you can define it as the `as` prop.
