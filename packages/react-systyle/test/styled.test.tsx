@@ -11,7 +11,7 @@ it('creates an already usable systyle component', () => {
   const element = styled.toJSON()!
 
   expect(element.type).toBe('div')
-  expect(element.props.className).toBe('')
+  expect(element.props.className).toBe(Styled.toString().slice(1))
   expect(element.children).toEqual(['content'])
 })
 
@@ -21,7 +21,7 @@ it('sets styling props', () => {
     bg: 'red',
     px: 2,
 
-    ':hover': {
+    '&:hover': {
       bg: 'lime'
     }
   }
