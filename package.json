@@ -4,6 +4,9 @@
   "description": "mono repo of moulinette",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.9",
     "jest": "^24.1.0",
