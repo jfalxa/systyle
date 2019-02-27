@@ -118,19 +118,19 @@ const Button = Styled.as('button').with(disableStyle)
 const AsyncButton = Button.with(loader)
 
 // renders a button with a white background and pointer cursor
-let el = <Button>Run</Button>
+<Button>Run</Button>
 
 // renders a disabled button with a gray background and not-allowed cursor
-let el = <Button disabled>Run</Button>
+<Button disabled>Run</Button>
 
 // renders a button with a white background and pointer cursor
-let el = <AsyncButton>Load</AsyncButton>
+<AsyncButton>Load</AsyncButton>
 
 // renders a disabled button with a gray background and not-allowed cursor
-let el = <AsyncButton disabled>Load</AsyncButton>
+<AsyncButton disabled>Load</AsyncButton>
 
 // renders a disabled button with a gray background and not-allowed cursor and 'Loading...' written inside
-let el = <AsyncButton loading fallback="Loading...">Load</AsyncButton>
+<AsyncButton loading fallback="Loading...">Load</AsyncButton>
 ```
 
 ## Writing CSS directly
@@ -155,7 +155,7 @@ const ColoredSquare = Styled.css`
 `
 
 // sets the component background to blue
-let el = <ColoredSquare myColor="blue" />
+<ColoredSquare myColor="blue" />
 
 // the following code won't work
 // css is added after the myColor prop so it will be built before
