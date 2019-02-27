@@ -1,14 +1,14 @@
 import { Moulinette, System, Builder, Extension, Wrapper } from './types'
 import { merge, flatten, compose, moulinettify } from './utils'
 
-export function createSystem<S extends System>(
-  builder: Builder,
+export function createSystem<C, S extends C & System>(
+  builder: Builder<C>,
   moulinettes: Moulinette[] = [],
-  wrappers: Wrapper[] = [],
+  wrappers: Wrapper<C>[] = [],
   extensions: Extension<any>[] = []
 ) {
   const moulinette: Moulinette = compose(moulinettes)
-  const wrap: Wrapper = compose(wrappers)
+  const wrap: Wrapper<C> = compose(wrappers)
 
   const System = wrap(builder(moulinette)) as S
 

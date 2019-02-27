@@ -1,7 +1,8 @@
 import { Builder, System, Props, Wrapper } from '../src/types'
 import { createSystem, merge } from '../src'
 
-const sys = (b: Builder = v => v) => createSystem(b)
+type Component = (props: Props) => any
+const sys = (b: Builder<Component> = v => v) => createSystem(b)
 
 function partitionBy(props: Props, by: (v: any, k: string) => boolean) {
   const match: Props = {}
@@ -136,7 +137,7 @@ it('invokes a system moulinette statically', () => {
 })
 
 it('extends a system', () => {
-  interface Ext extends System {
+  interface Ext extends System, Component {
     ok(): boolean
   }
 
@@ -153,7 +154,7 @@ it('extends a system', () => {
 it('wraps as system with functions', () => {
   const theme = { spacing: 8 }
 
-  const withTheme: Wrapper = Component => props =>
+  const withTheme: Wrapper<Component> = Component => props =>
     Component({ ...props, theme: merge(theme, props.theme || {}) })
 
   const A = sys().wrap(withTheme)
@@ -162,4 +163,33 @@ it('wraps as system with functions', () => {
   expect(A({})).toEqual({ theme })
   expect(B({})).toEqual({ theme, other: true })
   expect(B({ theme: { fonts: { M: 16 }}})).toEqual({ other: true, theme: { spacing: 8, fonts: { M: 16 } } }) // prettier-ignore
+})
+
+it('can build something else than functions', () => {
+  class Component {
+    constructor(protected props: Props) {}
+  }
+
+  const builder = (moulinette: Function) =>
+    class Moulinette extends Component {
+      run() {
+        return moulinette(this.props)
+      }
+    }
+
+  const System = createSystem(builder)
+  const A = System.with({ a: true })
+  const B = A.with({ b: true })
+
+  const system = new System({})
+  const a = new A({})
+  const b = new B({})
+  const ab = new A({ b: true })
+  const abc = new B({ c: true })
+
+  expect(system).toEqual({ props: {} })
+  expect(a.run()).toEqual({ a: true })
+  expect(b.run()).toEqual({ a: true, b: true })
+  expect(ab.run()).toEqual({ a: true, b: true })
+  expect(abc.run()).toEqual({ a: true, b: true, c: true })
 })
