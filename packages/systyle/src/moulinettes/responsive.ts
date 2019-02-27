@@ -11,7 +11,9 @@ function isNumber(key: string | number) {
 
 function isResponsive(breakpoints: Theme['breakpoints']) {
   return (value: any) =>
-    isObject(value) && Object.keys(value).every(key => key in breakpoints)
+    isObject(value) &&
+    isObject(breakpoints) &&
+    Object.keys(value).every(key => key in breakpoints)
 }
 
 export function mediaQuery(

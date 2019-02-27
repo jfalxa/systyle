@@ -151,6 +151,8 @@ it('deals with responsive props', () => {
     { theme }
   )
 
+  expect(createSystem(sys).with(responsive)({})).toEqual({})
+
   expect(Styled({ bg: { mobile: 'red' } })).toEqual({
     [mediaQuery('0')]: { bg: 'red' }
   })
