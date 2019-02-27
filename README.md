@@ -22,6 +22,36 @@ const App = props => {
 }
 ```
 
+Note that if some of the props you pass have a valid CSS rule or selector as key, they will also be used to style your component:
+
+```JS
+const css = {
+  width: 100,
+  height: 100,
+  background: 'blue',
+
+  '& p': {
+    color: 'white'
+  },
+
+  ':hover': {
+    background: 'yellow'
+  },
+
+  '@media (max-width: 720px)': {
+    '&': {
+      background: 'green'
+    }
+
+    '& p': {
+      color: 'yellow'
+    }
+  }
+}
+
+<Styled {...css} />
+```
+
 ## Setting defaults
 
 The Styled component comes with a static method `.with()` that allows you to define a more specific version of the original component.
@@ -40,6 +70,18 @@ Every component generated with `.with()` will also be a styled component so it'l
 ```JS
 const Square = Styled.with({ width: 100, height: 100, background: 'transparent' })
 const BlueSquare = Square.with({ background: 'blue' })
+```
+
+And you can again use CSS selectors as props:
+
+```JS
+const HoverRed = Styled.with({
+  background: 'white',
+
+  ':hover': {
+    background: 'red'
+  }
+})
 ```
 
 ## Changing the rendered component
@@ -135,13 +177,18 @@ const AsyncButton = Button.with(loader)
 
 ## Writing CSS directly
 
-Styled components also have a `.css` static method to help you write CSS directly.
+Styled components also have a `.css` template string tag to help you write CSS directly.
 
 ```JS
 const BlueSquare = Styled.css`
   width: 100px;
   height: 100px;
   background: blue;
+`
+
+// and you can add some more css on top
+const RedSquare = BlueSquare.css`
+  background: red;
 `
 ```
 
@@ -156,7 +203,11 @@ const ColoredSquare = Styled.css`
 
 // sets the component background to blue
 <ColoredSquare myColor="blue" />
+```
 
+Remeber that ultimately, `.css` is just a shorthand that adds a moulinette to your component, so the order matters. You won't be able to get props that are created in moulinettes that were defined before, only from those that are added after.
+
+```JS
 // the following code won't work
 // css is added after the insideProp prop so it will be built before
 // => inside the function, props.insideProp will be undefined
