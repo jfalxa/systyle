@@ -1,15 +1,15 @@
-import './fake-body-style'
-
 import { Builder, Props } from 'moulinette/lib/types'
 import { createSystem } from 'moulinette'
 
-import { extension } from '../src'
+import { mixin } from '../src'
 import { extractCSS } from '../src/moulinettes/css'
 import { createElement } from '../src/moulinettes/element'
 import { applyTheme } from '../src/moulinettes/theme'
 import { aliases } from '../src/moulinettes/aliases'
+import { StyledSystem } from '../src/types'
 
-const sys: Builder = v => v
+type Component = (props: Props) => any
+const sys: Builder<Component> = v => v
 
 it('creates a styled system', () => {
   const Styled = createSystem(sys).with(extractCSS)
@@ -59,7 +59,7 @@ it('detects nested css rules', () => {
 
 it('can add css to a system with a template string', () => {
   const Styled = createSystem(sys)
-    .extend(extension)
+    .extend<Component & StyledSystem>(mixin)
     .with(extractCSS)
 
   const t = 'color: red;'
@@ -109,7 +109,7 @@ it('uses theme config', () => {
     colors: { main: 'red' }
   }
 
-  const injectTheme: Builder = moulinette => input => {
+  const injectTheme: Builder<Component> = moulinette => input => {
     const { theme: _ = null, ...props } = moulinette({ ...input, theme }) || {}
     return props
   }

@@ -6,5 +6,7 @@ export function addAnimation(nextAnimation: string) {
 }
 
 export function combineAnimations({ animations = [], ...props }) {
-  return { ...props, animation: animations.join() }
+  return animations.length > 0
+    ? { ...props, animation: animations.join() }
+    : props
 }

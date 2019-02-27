@@ -12,7 +12,7 @@ export interface Theme {
   breakpoints: { [key: string]: number | string }
 }
 
-export interface Styled extends System {
+export interface StyledSystem extends System {
   computeCSS: Moulinette
   as(type: string | Function): this
   css(template: CSSTemplate[0], ...args: CSSTemplate[1]): this
