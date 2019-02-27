@@ -1,4 +1,4 @@
-import { Props, Declaration, Moulinette, Wrapper } from './types'
+import { Props, Declaration, Moulinette } from './types'
 
 export function isMergeable(value: any): value is Props {
   return value !== null && typeof value === 'object' && value.constructor === Object // prettier-ignore
@@ -17,7 +17,7 @@ export function flatten(arr: any[], res: any[] = []) {
 export function merge(target: any, source: any) {
   if (!isMergeable(target) || !isMergeable(source)) return source
 
-  const merged: any = { ...target }
+  const merged = { ...target }
   for (const key in source) {
     merged[key] = merge(target[key], source[key])
   }
