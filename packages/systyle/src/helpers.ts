@@ -4,7 +4,11 @@ import { By } from './types'
 const rxRules = /^(\&|\@|\:|\#|\.)/
 
 export function isCSS(_: any, key: string) {
-  return rxRules.test(key) || key in document.body.style
+  if (rxRules.test(key)) return true
+
+  return typeof document === 'undefined'
+    ? require('known-css-properties').all.includes(key)
+    : key in document.body.style
 }
 
 export function isEmpty(value: any) {

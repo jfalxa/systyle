@@ -23,6 +23,7 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "known-css-properties": "^0.12.0",
     "moulinette": "^1.2.0",
     "tslib": "^1.9.3"
   }
