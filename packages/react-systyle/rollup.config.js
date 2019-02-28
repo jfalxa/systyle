@@ -12,7 +12,7 @@ export default {
     { file: pkg.module, format: 'es' }
   ],
 
-  external: ['tslib', 'react', 'react-dom', 'emotion'],
+  external: ['tslib', 'react', 'react-dom', 'emotion', 'systyle'],
 
   plugins: [
     resolve(),
