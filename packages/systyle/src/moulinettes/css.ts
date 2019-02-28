@@ -8,16 +8,13 @@ import { partition, compact, isEmpty, isCSS } from '../helpers'
 
 const partitionCSS = partition(isCSS)
 
-export function extractCSS(input: Props) {
-  const [css, props] = partitionCSS(input)
-  const definedCSS = compact(css)
+export function extractCSS({ css: nextCSS = [], ...input }: Props) {
+  const [cssProps, props] = partitionCSS(input)
 
-  if (!isEmpty(definedCSS)) {
-    props.css = props.css || []
-    props.css = [css, ...props.css]
-  }
+  const computedCSS = compact(cssProps)
+  const css = isEmpty(computedCSS) ? nextCSS : [computedCSS, ...nextCSS]
 
-  return props
+  return css.length > 0 ? { ...props, css } : props
 }
 
 export const compileCSS = compose([extractCSS, applyTheme, responsive, aliases])
