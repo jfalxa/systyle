@@ -401,18 +401,23 @@ const theme = {
 }
 ```
 
-With the above config injected in your styled components, you can now also use objects as values for your styling props. If their keys match the ones in `theme.breakpoints`, they will be converted to media queries and added to the CSS of the component.
+With the above config injected in your styled components, you can now use those names as key in your props, they will ultimately be converted to the corresponding media query in your component's final CSS.
 
 ```JS
 const Reponsive = Styled.with({
-  width: {
-    mobile: '100%',
-    tablet: '66%',
-    desktop: '50%'
+  width: '100%',
+  background: '#000',
+
+  mobile: {
+    background: '#eee'
   },
 
-  background: {
-    mobile: '#eee'
+  tablet: {
+    width: '66%'
+  },
+
+  desktop: {
+    width: '50%'
   }
 })
 ```

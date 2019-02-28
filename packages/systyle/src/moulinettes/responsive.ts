@@ -10,10 +10,8 @@ function isNumber(key: string | number) {
 }
 
 function isResponsive(breakpoints: Theme['breakpoints']) {
-  return (value: any) =>
-    isObject(value) &&
-    isObject(breakpoints) &&
-    Object.keys(value).every(key => key in breakpoints)
+  return (value: any, key: string) =>
+    isObject(value) && isObject(breakpoints) && key in breakpoints
 }
 
 export function mediaQuery(
@@ -34,17 +32,9 @@ export function responsive(input: Props) {
   const breakpoints = theme(input, 'breakpoints')
   const [responsive, props] = partition(isResponsive(breakpoints))(input)
 
-  const mediaQueries = Object.keys(responsive)
-    .map(key =>
-      Object.keys(responsive[key])
-        .map(bp => ({
-          [mediaQuery(bp, breakpoints)]: {
-            [key]: responsive[key][bp]
-          }
-        }))
-        .reduce(merge, {})
-    )
-    .reduce(merge, {})
+  const mediaQueries = Object.keys(responsive).map(key => ({
+    [mediaQuery(key, breakpoints)]: responsive[key]
+  }))
 
-  return merge(props, mediaQueries)
+  return mediaQueries.reduce(merge, props)
 }
