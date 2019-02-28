@@ -13,6 +13,7 @@ export interface Theme {
 }
 
 export interface StyledSystem extends System {
+  className: string
   computeCSS: Moulinette
   as(type: string | Function): this
   css(template: CSSTemplate[0], ...args: CSSTemplate[1]): this

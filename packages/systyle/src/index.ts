@@ -16,6 +16,8 @@ export function mixin(Styled: StyledSystem) {
 
   Styled.animate = (duration, animation = '') =>
     Styled.with(addAnimation(`${animation} ${duration}`))
+
+  Styled.toString = () => `.${Styled.className}`
 }
 
 export function createStyled<T>(builder: Builder<T>) {
