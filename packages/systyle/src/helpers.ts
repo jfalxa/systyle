@@ -7,7 +7,7 @@ export function isCSS(_: any, key: string) {
   if (rxRules.test(key)) return true
 
   return typeof document === 'undefined'
-    ? require('known-css-properties').all.includes(key)
+    ? require('known-css-properties').all.includes(require('kebab-case')(key))
     : key in document.body.style
 }
 

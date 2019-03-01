@@ -12,7 +12,7 @@ export default {
     { file: pkg.module, format: 'es' }
   ],
 
-  external: ['tslib'],
+  external: ['tslib', 'moulinette'],
 
   plugins: [
     resolve(),
