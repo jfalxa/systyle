@@ -5,6 +5,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "prep": "lerna clean && lerna bootstrap --hoist",
+    "build": "lerna run build",
+    "start": "lerna run start",
     "test": "jest"
   },
   "devDependencies": {
