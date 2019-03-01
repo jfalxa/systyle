@@ -4,7 +4,7 @@ A thin layer on top of your components to quickly build design systems with `emo
 
 ## Installation
 
-`npm install react-systyle emotion`
+`npm install react-systyle`
 
 ## Using the Styled component
 
@@ -254,7 +254,7 @@ const BlueSquare = Styled
 
 ## Wrapping components
 
-You can wrap your styled components in higher order component using the `.wrap()` static method. It will generate a new styled component that will be rendered surronded by the passed HOC.
+You can wrap your styled components in higher order component using the `.wrap()` static method. It will generate a new styled component that will be rendered surrounded by the passed HOC.
 Every component built of this component will also be wrapped with the hoc.
 
 ```JS

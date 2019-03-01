@@ -32,7 +32,6 @@
     "tslib": "^1.9.3"
   },
   "peerDependencies": {
-    "@emotion/core": "^10.0.7",
     "react": "^16.8.3"
   }
 }
