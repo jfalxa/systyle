@@ -1,6 +1,7 @@
+/** @jsx jsx */
 import * as React from 'react'
 import { createStyled, systyle } from 'systyle'
-import { css as emotion } from 'emotion'
+import { jsx } from '@emotion/core'
 
 function uniqClassName() {
   return `sys-${Math.random()
@@ -13,18 +14,14 @@ const builder = (moulinette: Function) =>
     static className = uniqClassName()
 
     render() {
-      const {
-        as: Type = 'div',
-        css = [],
-        className = '',
-        theme = null,
-        ...props
-      } = moulinette(this.props) || {}
+      const { as: Type = 'div', css = [], theme = null, ...props } =
+        moulinette(this.props) || {}
 
-      const computedClassName = css.length > 0 ? emotion(css) : ''
-      const classNames = `${Styled.className} ${className} ${computedClassName}`
+      const className = [Styled.className, props.className]
+        .filter(Boolean)
+        .join(' ')
 
-      return <Type {...props} className={classNames.trim()} />
+      return <Type {...props} className={className} css={css} />
     }
   }
 

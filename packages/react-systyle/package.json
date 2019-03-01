@@ -25,14 +25,14 @@
     "typescript": "^3.3.3333"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.7",
     "@types/react": "^16.8.5",
-    "emotion": "^10.0.7",
     "react": "^16.8.3",
     "systyle": "^2.3.2",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {
-    "emotion": "^10.0.7",
+    "@emotion/core": "^10.0.7",
     "react": "^16.8.3"
   }
 }
