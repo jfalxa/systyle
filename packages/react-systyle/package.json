@@ -1,6 +1,6 @@
 {
   "name": "react-systyle",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
   "files": [
@@ -28,7 +28,7 @@
     "@emotion/core": "^10.0.7",
     "@types/react": "^16.8.5",
     "react": "^16.8.3",
-    "systyle": "^2.3.2",
+    "systyle": "^2.3.3",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {
