@@ -1,4 +1,4 @@
-# Systyle
+# React-Systyle
 
 A thin layer on top of your components to quickly build design systems with `emotion`.
 
