@@ -24,4 +24,4 @@ export function createStyled<T>(builder: Builder<T>) {
   return createSystem(builder).extend<T & StyledSystem>(mixin)
 }
 
-export default createSystem
+export default createStyled
