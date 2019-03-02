@@ -423,3 +423,69 @@ const Reponsive = Styled.with({
   }
 })
 ```
+
+## Recommendations
+
+Most of the time, it's nicer to predefine your styled components instead of passing them styling props on render:
+
+```JS
+const Container = Styled.with({
+  display: 'flex',
+  flexDirection: 'column'
+})
+
+const Title = Styled.as('h1')
+const Text = Styled.as('span')
+
+const App = props => (
+  <Container>
+    <Title>Hi</Title>
+    <Text>Some text</Text>
+  </Container>
+)
+```
+
+The only exception being for styling props that tend to vary a lot between different uses of a same component, like margins:
+
+```JS
+const Row = System.with({ display: 'flex' })
+
+const App = props => (
+  <Container>
+    <Title mb={16}>Hi</Title>
+
+    <Container flexDirection="row">
+      <Text>A</Text>
+      <Text mx={8}>B</Text>
+      <Text>C</Text>
+    </Container>
+
+    <Text mt={16}>D</Text>
+  </Container>
+)
+```
+
+Styled components are defined as PureComponent so they will only rerender if their props change. Be sure to avoid passing them new objects or arrow functions on render if you want to avoid running the whole set of moulinette computation every time something changes.
+
+```JS
+const App = props => (
+  <Styled>
+    <Styled
+      as="button"
+
+      // the arrow function here is recreated on every render of App
+      // => this styled component will recompute itself everytime
+      onClick={() => alert('clicked!')}
+    >
+      CLICK ME
+    </Styled>
+
+    <Styled
+      width="100%"
+
+      // a new object is created here => rerender
+      dekstop={{ width: '50%' }}
+    />
+  </Styled>
+)
+```
