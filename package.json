@@ -4,6 +4,7 @@
   "description": "mono repo of moulinette",
   "author": "",
   "license": "ISC",
+  "repository": "github:jfalxa/systyle",
   "scripts": {
     "prep": "lerna clean && lerna bootstrap --hoist",
     "build": "lerna run build",
