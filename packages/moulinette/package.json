@@ -1,6 +1,6 @@
 {
   "name": "moulinette",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "repository": "https://github.com/jfalxa/systyle/tree/master/packages/moulinette",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
