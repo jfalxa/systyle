@@ -33,4 +33,4 @@ const App = props => (
 
 ## Using a styled component
 
-[See react-systyle documentation](../react-systyle/README.md)
+[See react-systyle documentation](../react-systyle)

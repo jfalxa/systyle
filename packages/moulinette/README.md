@@ -141,7 +141,7 @@ As the orders matters, if in the example above `add()` would have been added bef
 
 ## Adding mixins
 
-You can extend the static API of your system components to create helpers that encapsulate common operations made through with your systems.
+You can extend the static API of your system components to create helpers that encapsulate common operations made with your systems.
 A mixin is a function that takes the currently built component as parameter and mutates it by adding it static methods.
 
 ```JS
