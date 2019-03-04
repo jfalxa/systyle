@@ -139,36 +139,6 @@ AddMul({ a: 10, b: 100, n: 2 }) === { value: 220 }
 
 As the orders matters, if in the example above `add()` would have been added before `multiply()`, the multiplication would happen first and then be overwritten by the addition.
 
-## Composing your system
-
-You may want to wrap your system calls in other functions in order to add a general context to your computations or to perform some operations before starting any calculations. To do so you can use the `.wrap()` static method by passing it a function that takes a system as parameter and returns another system with your enhancements (basically a higher order component).
-
-```JS
-const context = {
-  defaultValue: 'A'
-}
-
-function withContext(System) {
-  return function ContextSystem(props) {
-    return System({ ...props, context })
-  }
-}
-
-const Context = System.wrap(withContext)
-
-const Value = Context.with(({ context, value, ...props }) => ({
-  ...props,
-
-  value: typeof value === 'undefined'
-    ? context.defaultValue
-    : value
-}))
-
-Context({}) === { context: { defaultValue: 'A' } }
-Value({}) === { value: 'A' }
-Value({ value: 'B' }) === { value: 'B' }
-```
-
 ## Adding mixins
 
 You can extend the static API of your system components to create helpers that encapsulate common operations made through with your systems.

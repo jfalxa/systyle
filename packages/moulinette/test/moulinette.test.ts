@@ -1,4 +1,4 @@
-import { Builder, System, Props, Wrapper } from '../src/types'
+import { Builder, System, Props } from '../src/types'
 import { createSystem, merge } from '../src'
 
 type Component = (props: Props) => any
@@ -26,8 +26,6 @@ it('creates a basic system', () => {
 
   expect(System({})).toEqual({})
   expect(System({ value: 0 })).toEqual({ value: 0 })
-  expect(System.compute({})).toEqual({})
-  expect(System.compute({ value: 0 })).toEqual({ value: 0 })
 })
 
 it('creates a system with custom builder', () => {
@@ -131,11 +129,6 @@ it('ignores moulinettes that do not return objects', () => {
   expect(System({ change: true })).toEqual({ start: true, middle: true, end: true }) // prettier-ignore
 })
 
-it('invokes a system moulinette statically', () => {
-  const System = sys().with(({ input }) => ({ output: input }))
-  expect(System.compute({ input: 'test' })).toEqual({ output: 'test' })
-})
-
 it('extends a system', () => {
   interface Ext extends System, Component {
     ok(): boolean
@@ -149,20 +142,6 @@ it('extends a system', () => {
 
   expect(Ext.ok()).toBeTruthy()
   expect(ExtChild.ok()).toBeTruthy()
-})
-
-it('wraps as system with functions', () => {
-  const theme = { spacing: 8 }
-
-  const withTheme: Wrapper<Component> = Component => props =>
-    Component({ ...props, theme: merge(theme, props.theme || {}) })
-
-  const A = sys().wrap(withTheme)
-  const B = A.with({ other: true })
-
-  expect(A({})).toEqual({ theme })
-  expect(B({})).toEqual({ theme, other: true })
-  expect(B({ theme: { fonts: { M: 16 }}})).toEqual({ other: true, theme: { spacing: 8, fonts: { M: 16 } } }) // prettier-ignore
 })
 
 it('can build something else than functions', () => {
