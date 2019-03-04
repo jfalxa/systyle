@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import createStyled from 'systyle'
-import { jsx } from '@emotion/core'
+import { jsx, ThemeContext } from '@emotion/core'
 
 const uid = () => Math.random().toString(36).slice(2) // prettier-ignore
 
@@ -13,14 +13,20 @@ const builder = (moulinette: Function) =>
     static toString = () => `.${Styled.className}`
 
     render() {
-      const { as: Type = 'div', css = null, theme = null, ...props } =
-        moulinette(this.props) || {}
+      return (
+        <ThemeContext.Consumer>
+          {theme => {
+            const { as: Type = 'div', css = null, theme: _ = null, ...props } =
+              moulinette({ ...this.props, theme }) || {}
 
-      const className = props.className
-        ? [Styled.className, props.className].join(' ')
-        : Styled.className
+            const className = props.className
+              ? [Styled.className, props.className].join(' ')
+              : Styled.className
 
-      return <Type {...props} className={className} css={css} />
+            return <Type {...props} className={className} css={css} />
+          }}
+        </ThemeContext.Consumer>
+      )
     }
   }
 
