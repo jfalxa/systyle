@@ -1,28 +1,27 @@
 /** @jsx jsx */
+
 import * as React from 'react'
-import { createStyled, systyle } from 'systyle'
+import createStyled from 'systyle'
 import { jsx } from '@emotion/core'
 
-function uniqClassName() {
-  return `sys-${Math.random()
-    .toString(36)
-    .slice(2)}`
-}
+const uid = () => Math.random().toString(36).slice(2) // prettier-ignore
 
 const builder = (moulinette: Function) =>
   class Styled extends React.PureComponent<any, any> {
-    static className = uniqClassName()
+    static className = `s${uid()}`
+
+    static toString = () => `.${Styled.className}`
 
     render() {
-      const { as: Type = 'div', css = [], theme = null, ...props } =
+      const { as: Type = 'div', css = null, theme = null, ...props } =
         moulinette(this.props) || {}
 
-      const className = [Styled.className, props.className]
-        .filter(Boolean)
-        .join(' ')
+      const className = props.className
+        ? [Styled.className, props.className].join(' ')
+        : Styled.className
 
       return <Type {...props} className={className} css={css} />
     }
   }
 
-export default createStyled(builder).with(systyle)
+export default createStyled(builder)

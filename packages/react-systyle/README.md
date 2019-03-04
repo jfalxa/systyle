@@ -252,29 +252,6 @@ const BlueSquare = Styled
   .with({ insideProp: 'blue' })
 ```
 
-## Wrapping components
-
-You can wrap your styled components in higher order component using the `.wrap()` static method. It will generate a new styled component that will be rendered surrounded by the passed HOC.
-Every component built of this component will also be wrapped with the hoc.
-
-```JS
-// withTheme injects the theme as a prop to the wrapped component
-import { withTheme } from './theme'
-
-const Themed = Styled.wrap(withTheme)
-
-// access the theme in a moulinette
-const Main = Themed.with(props => ({
-  ...props,
-  backgroundColor: props.theme.colors.primaryBG
-}))
-
-// or in a css template function
-const Main = Themed.css`
-  background-color: ${props => props.theme.colors.primaryBG};
-`
-```
-
 ## Animating components
 
 Systyle comes with an `.animate()` method that's a shortand to bind animations to your components.
@@ -344,9 +321,11 @@ function App() {
 
 ## Theme helpers
 
-If your styled component receives a `theme` prop, it gives you access to some sugar.
+Thanks to `emotion`, if a theme context is provided to your component tree, your styled components get access to some sugar.
 
 ```JS
+import { ThemeContext } from '@emotion/core'
+
 const theme = {
   // multiplier for margin and padding numeric values
   spacing: 8,
@@ -369,12 +348,6 @@ const theme = {
   }
 }
 
-function withTheme(Component) {
-  // inject theme in Component's props
-}
-
-const Themed = Styled.wrap(withTheme)
-
 // creates a span with fontFamily = sans-serif and fontSize = 16px
 const Text = Styled.as('span').with({ font: 'body', size: 'M' })
 
@@ -383,6 +356,15 @@ const Title = Styled.as('h1').with({ font: 'header', size: 'L', color: 'primary'
 
 // creates a div with padding = '8px 16px', border = '1px solid black'
 const Box = Styled.with({ px: 2, py: 1, b: '1px solid black' })
+
+const App = props => (
+  <ThemeContext.Provider value={theme}>
+    <Box>
+      <Title>title</Title>
+      <Text>text</Text>
+    </Box>
+  </ThemeContext.Provider>
+)
 ```
 
 ## Responsive props
