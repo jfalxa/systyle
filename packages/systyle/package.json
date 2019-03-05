@@ -1,6 +1,6 @@
 {
   "name": "systyle",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "repository": "https://github.com/jfalxa/systyle/tree/master/packages/systyle",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
