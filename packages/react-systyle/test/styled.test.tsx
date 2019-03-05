@@ -1,10 +1,14 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import serializer from 'jest-emotion'
+import { ThemeContext } from '@emotion/core'
 
 import Styled from '../src'
 
 expect.addSnapshotSerializer(serializer)
+
+// give a fixed classname to the component
+Styled.className = 'styled'
 
 it('creates an already usable systyle component', () => {
   const styled = renderer.create(<Styled>content</Styled>)
@@ -16,7 +20,7 @@ it('creates an already usable systyle component', () => {
 })
 
 it('sets styling props', () => {
-  const style = {
+  const css = {
     id: 'styled',
     bg: 'red',
     px: 2,
@@ -26,7 +30,25 @@ it('sets styling props', () => {
     }
   }
 
-  const styled = renderer.create(<Styled {...style}>content</Styled>)
+  const styled = renderer.create(<Styled {...css}>content</Styled>)
 
   expect(styled.toJSON()).toMatchSnapshot()
+})
+
+it('uses emotion theme context', () => {
+  const theme = {
+    colors: {
+      test: 'red'
+    }
+  }
+
+  const App = () => (
+    <ThemeContext.Provider value={theme}>
+      <Styled bg="test" />
+    </ThemeContext.Provider>
+  )
+
+  const app = renderer.create(<App />)
+
+  expect(app.toJSON()).toMatchSnapshot()
 })

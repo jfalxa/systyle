@@ -8,25 +8,19 @@ const uid = () => Math.random().toString(36).slice(2) // prettier-ignore
 
 const builder = (moulinette: Function) =>
   class Styled extends React.PureComponent<any, any> {
+    static contextType = ThemeContext
     static className = `s${uid()}`
-
     static toString = () => `.${Styled.className}`
 
     render() {
-      return (
-        <ThemeContext.Consumer>
-          {theme => {
-            const { as: Type = 'div', css = null, theme: _ = null, ...props } =
-              moulinette({ ...this.props, theme }) || {}
+      const { as: Type = 'div', css = null, theme: _ = null, ...props } =
+        moulinette({ ...this.props, theme: this.context }) || {}
 
-            const className = props.className
-              ? [Styled.className, props.className].join(' ')
-              : Styled.className
+      const className = props.className
+        ? [Styled.className, props.className].join(' ')
+        : Styled.className
 
-            return <Type {...props} className={className} css={css} />
-          }}
-        </ThemeContext.Consumer>
-      )
+      return <Type {...props} className={className} css={css} />
     }
   }
 

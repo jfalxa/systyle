@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sets styling props 1`] = `
+.emotion-0 {
+  background-color: red;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.emotion-0:hover {
+  background-color: lime;
+}
+
+<div
+  className="styled emotion-0"
+  id="styled"
+>
+  content
+</div>
+`;
+
+exports[`uses emotion theme context 1`] = `
+.emotion-0 {
+  background-color: red;
+}
+
+<div
+  className="styled emotion-0"
+/>
+`;
