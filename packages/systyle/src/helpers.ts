@@ -16,7 +16,12 @@ export function isVoid(value: any) {
 }
 
 export function isObject(value: any): value is object {
-  return value !== null && typeof value === 'object' && value.constructor === Object // prettier-ignore
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    value.constructor === Object &&
+    !value.hasOwnProperty('$$typeof')
+  )
 }
 
 export function isEmpty(value: any) {
