@@ -11,7 +11,7 @@ const builder = (moulinette: Function) => {
     static contextType = ThemeContext
 
     render() {
-      const { children = null, domRef = null, ...input } = {
+      const { domRef = null, ...input } = {
         ...this.props,
         theme: this.context
       }
@@ -23,11 +23,7 @@ const builder = (moulinette: Function) => {
         ? [props.className, RefStyled.className].join(' ')
         : RefStyled.className
 
-      return (
-        <Type {...props} ref={domRef} className={className} css={css}>
-          {children}
-        </Type>
-      )
+      return <Type {...props} ref={domRef} className={className} css={css} />
     }
   }
 
