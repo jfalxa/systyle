@@ -1,6 +1,6 @@
 {
   "name": "react-systyle",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "repository": "https://github.com/jfalxa/systyle/tree/master/packages/react-systyle",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
