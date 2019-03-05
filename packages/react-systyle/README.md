@@ -406,6 +406,24 @@ const Reponsive = Styled.with({
 })
 ```
 
+## Using refs
+
+If you want to access the dom element rendered by your styled component, you can pass a ref to the component's `domRef` prop.
+
+```JS
+class App extends React.Component {
+  video = React.createRef()
+
+  componentDidMount() {
+    this.video.current.play()
+  }
+
+  render() {
+    return <Styled as="video" domRef={this.video} />
+  }
+}
+```
+
 ## Recommendations
 
 Most of the time, it's nicer to predefine your styled components instead of passing them styling props on render:

@@ -13,14 +13,19 @@ const builder = (moulinette: Function) =>
     static toString = () => `.${Styled.className}`
 
     render() {
-      const { as: Type = 'div', css = null, theme: _ = null, ...props } =
-        moulinette({ ...this.props, theme: this.context }) || {}
+      const {
+        as: Type = 'div',
+        css = null,
+        domRef = null,
+        theme = null,
+        ...props
+      } = moulinette({ ...this.props, theme: this.context }) || {}
 
       const className = props.className
         ? [Styled.className, props.className].join(' ')
         : Styled.className
 
-      return <Type {...props} className={className} css={css} />
+      return <Type {...props} ref={domRef} className={className} css={css} />
     }
   }
 
