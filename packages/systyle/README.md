@@ -2,26 +2,26 @@
 
 A set of `moulinette` helpers to style components through their props.
 
-## Creating a styled system for react
+## Example: creating a styled system for hyperapp
 
 ```JS
-import React from 'react'
-import { createStyled, systyle } from 'systyle'
+import { h } from "hyperapp"
+import { createStyled } from 'systyle'
 import { cx, css as emotion } from 'emotion'
 
-const reactBuilder = moulinette =>
-  function Styled(props) {
+const hyperappBuilder = moulinette =>
+  function Styled(props, children) {
     const {
-      as: Type = 'div',
+      as: type, = 'div',
       css = [],
       className = '',
       ...props
     } = moulinette(props)
 
-    return <Type className={cx(className, emotion(css))} />
+    return h(type, { ...props, className: cx(className, emotion(css)) }, children) />
   }
 
-const Styled = createStyled(reactBuilder).with(systyle)
+const Styled = createStyled(hyperappBuilder)
 
 const App = props => (
   <Styled as="main" display="flex" flexDirection="column">
