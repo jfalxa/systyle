@@ -11,12 +11,16 @@ export function isCSS(_: any, key: string) {
     : key in document.body.style
 }
 
-export function isEmpty(value: any) {
-  return value === null || (typeof value === 'object' && Object.keys(value).length === 0) // prettier-ignore
+export function isVoid(value: any) {
+  return typeof value === 'undefined' || value === null
 }
 
 export function isObject(value: any): value is object {
   return value !== null && typeof value === 'object' && value.constructor === Object // prettier-ignore
+}
+
+export function isEmpty(value: any) {
+  return isVoid(value) || Object.keys(value).length === 0
 }
 
 export function partition(by: By) {
@@ -39,7 +43,7 @@ export function partition(by: By) {
 }
 
 export function compact(props: Props) {
-  return partition(isEmpty)(props)[1]
+  return partition(isVoid)(props)[1]
 }
 
 export function replace(by: By) {

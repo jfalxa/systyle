@@ -22,6 +22,12 @@ it('creates a styled system', () => {
   expect(Styled({ css: [{ color: 'blue' }], background: 'red' })).toEqual({ css: [{ background: 'red' }, { color: 'blue' }] }) // prettier-ignore
 })
 
+it('passes a css object to a styled system', () => {
+  const Styled = createSystem(sys).with(extractCSS)
+
+  expect(Styled({ css: { background: 'red' } })).toEqual({ css: [{ background: 'red' }] }) // prettier-ignore
+})
+
 it('removes css with void values', () => {
   const Styled = createSystem(sys).with(extractCSS)
   const A = Styled.with({ color: 'red' })
