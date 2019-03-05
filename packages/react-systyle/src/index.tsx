@@ -16,8 +16,6 @@ const builder = (moulinette: Function) => {
         theme: this.context
       }
 
-      console.log({ input, theme: this.context })
-
       const { as: Type = 'div', css = null, theme = null, ...props } =
         moulinette(input) || {}
 
