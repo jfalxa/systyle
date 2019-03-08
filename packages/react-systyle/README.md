@@ -408,7 +408,7 @@ const Reponsive = Styled.with({
 
 ## Using refs
 
-If you want to access the dom element rendered by your styled component, you can pass a ref to the component's `domRef` prop.
+Refs are automatically forwared to the element rendered by your styled component. This means that if your component generates a dom element, you'll have direct access to it.
 
 ```JS
 class App extends React.Component {
@@ -419,7 +419,7 @@ class App extends React.Component {
   }
 
   render() {
-    return <Styled as="video" domRef={this.video} />
+    return <Styled as="video" ref={this.video} />
   }
 }
 ```
