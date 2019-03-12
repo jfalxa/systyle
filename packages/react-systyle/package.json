@@ -1,6 +1,6 @@
 {
   "name": "react-systyle",
-  "version": "0.2.16",
+  "version": "0.2.17",
   "repository": "https://github.com/jfalxa/systyle/tree/master/packages/react-systyle",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
@@ -29,7 +29,7 @@
     "@emotion/core": "^10.0.7",
     "@types/react": "^16.8.5",
     "react": "^16.8.3",
-    "systyle": "^2.3.11",
+    "systyle": "^2.3.12",
     "tslib": "^1.9.3"
   },
   "peerDependencies": {

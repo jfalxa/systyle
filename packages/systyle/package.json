@@ -1,6 +1,6 @@
 {
   "name": "systyle",
-  "version": "2.3.11",
+  "version": "2.3.12",
   "repository": "https://github.com/jfalxa/systyle/tree/master/packages/systyle",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
@@ -26,7 +26,7 @@
   "dependencies": {
     "kebab-case": "^1.0.0",
     "known-css-properties": "^0.12.0",
-    "moulinette": "^1.2.5",
+    "moulinette": "^1.2.6",
     "tslib": "^1.9.3"
   }
 }
