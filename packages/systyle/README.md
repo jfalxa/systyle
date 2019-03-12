@@ -4,7 +4,7 @@ A set of `moulinette` helpers to style components through their props.
 
 ## Example: creating a styled system for hyperapp
 
-```JS
+```js
 import { h } from "hyperapp"
 import { createStyled } from 'systyle'
 import { cx, css as emotion } from 'emotion'
