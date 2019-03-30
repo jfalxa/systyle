@@ -1,19 +1,11 @@
-A set of helpers to manipulate your components through props.
+## systyle
 
-## Moulinette
-
-This is the core of the project, it helps you build component systems with a simple API.
-
-[Go to package](./packages/moulinette)
-
-## Systyle
-
-A set of mixins and functions to plug on your Moulinette to manage your component's CSS through their props.
+A library agnostic factory to build components that can be styled through their props.
 
 [Go to package](./packages/systyle)
 
-## React-systyle
+## react-systyle
 
-A Moulinette built for React and extended with Systyle to ultimately generate CSS with `emotion`
+A `react` implementation of `systyle` that generates CSS with `emotion`
 
 [Go to package](./packages/react-systyle)
