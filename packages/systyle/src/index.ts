@@ -1,27 +1,33 @@
-import { Builder } from 'moulinette/lib/types'
-import { createSystem, compose } from 'moulinette'
+import { Moulinette, StyledSystem, Builder } from './types'
 
-import { StyledSystem } from './types'
-import { compileCSS } from './moulinettes/css'
-import { addTemplate } from './moulinettes/template'
-import { createElement } from './moulinettes/element'
-import { addAnimation, combineAnimations } from './moulinettes/animations'
+import { merge, flatten, compose, moulinettify } from './moulinette'
+import { systyle } from './moulinettes'
+import { uid, addClassName } from './moulinettes/classname'
 
-export const systyle = compose([createElement, compileCSS, combineAnimations])
+export function createStyled<C, S extends C & StyledSystem>(
+  builder: Builder<C>,
+  moulinettes: Moulinette[] = []
+) {
+  const className = `s${uid()}`
 
-export function mixin(Styled: StyledSystem) {
+  const moulinette: Moulinette = compose([
+    addClassName(className),
+    systyle,
+    ...moulinettes
+  ])
+
+  const Styled = builder(moulinette) as S
+
+  Styled.with = (...extras) => 
+    createStyled(builder, [...moulinettes, ...flatten(extras).map(moulinettify)]) // prettier-ignore
+
   Styled.as = type => Styled.with({ as: type })
 
-  Styled.css = (strings, ...args) => Styled.with(addTemplate(strings, args))
+  Styled.className = className
+  Styled.toString = () => `.${className}`
 
-  Styled.animate = (duration, animation = '') =>
-    Styled.with(addAnimation(`${animation} ${duration}`))
+  return Styled
 }
 
-export function createStyled<T>(builder: Builder<T>) {
-  return createSystem(builder)
-    .extend<T & StyledSystem>(mixin)
-    .with(systyle)
-}
-
+export { compose, merge }
 export default createStyled

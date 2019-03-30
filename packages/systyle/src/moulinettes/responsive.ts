@@ -1,9 +1,8 @@
-import { Props } from 'moulinette/lib/types'
-import { merge } from 'moulinette'
+import { Theme, Props } from '../types'
 
-import { Theme } from '../types'
+import { merge } from '../moulinette'
+import { isObject, partition } from './helpers'
 import { theme } from './theme'
-import { isObject, partition } from '../helpers'
 
 function isNumber(key: string | number) {
   return typeof key === 'number' || !isNaN(Number(key))

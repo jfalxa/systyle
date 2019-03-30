@@ -1,8 +1,11 @@
-import { Props, System, Moulinette } from 'moulinette/lib/types'
+export type Props = { [key: string]: any }
+export type Moulinette = (props: Props) => Props | void
+export type Builder<T> = (moulinette: Moulinette) => T
+export type Declaration = Props | Moulinette
+export interface Declarations extends Array<Declaration | Declarations> {}
 
 export type By = (value: any, key: string, context: Props) => any
 export type TemplateArg = string | number | ((props: Props) => string | number)
-export type CSSTemplate = [TemplateStringsArray, TemplateArg[]]
 
 export interface Theme {
   spacing: number
@@ -12,10 +15,9 @@ export interface Theme {
   breakpoints: { [key: string]: number | string }
 }
 
-export interface StyledSystem extends System {
+export interface StyledSystem {
   className: string
-  computeCSS: Moulinette
+  with(...declarations: Declarations): this
   as(type: string | Function): this
-  css(template: CSSTemplate[0], ...args: CSSTemplate[1]): this
-  animate(duration: string, animation?: string): this
+  toString(): string
 }

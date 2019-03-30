@@ -12,8 +12,6 @@ export default {
     { file: pkg.module, format: 'es' }
   ],
 
-  external: ['tslib', 'moulinette'],
-
   plugins: [
     resolve(),
     commonjs({ include: 'node_modules/**' }),

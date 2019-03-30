@@ -1,8 +1,8 @@
-import { Props } from 'moulinette/lib/types'
-import { compose } from 'moulinette'
+import { Props } from '../types'
+import { compose } from '../moulinette'
 
 import { Theme, By } from '../types'
-import { isCSS, replace } from '../helpers'
+import { isCSS, replace } from './helpers'
 
 export function theme(props: Props, category: keyof Theme, key?: string) {
   if (!('theme' in props) || !(category in props.theme)) return key

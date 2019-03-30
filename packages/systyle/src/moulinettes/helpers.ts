@@ -1,5 +1,4 @@
-import { Props } from 'moulinette/lib/types'
-import { By } from './types'
+import { By, Props } from '../types'
 
 const rxRules = /^(\&|\@|\:|\#|\.)/
 

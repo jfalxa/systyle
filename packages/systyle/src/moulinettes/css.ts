@@ -1,10 +1,6 @@
-import { Props } from 'moulinette/lib/types'
-import { compose } from 'moulinette'
+import { Props } from '../types'
 
-import { aliases } from './aliases'
-import { applyTheme } from './theme'
-import { responsive } from './responsive'
-import { partition, compact, isEmpty, isCSS } from '../helpers'
+import { partition, compact, isEmpty, isCSS } from './helpers'
 
 const partitionCSS = partition(isCSS)
 
@@ -17,5 +13,3 @@ export function extractCSS({ css: nextCSS = [], ...input }: Props) {
 
   return css.length > 0 ? { ...props, css } : props
 }
-
-export const compileCSS = compose([extractCSS, applyTheme, responsive, aliases])

@@ -1,4 +1,4 @@
-import { rename } from '../helpers'
+import { rename } from './helpers'
 
 export const aliases = rename({
   bg: 'backgroundColor',
