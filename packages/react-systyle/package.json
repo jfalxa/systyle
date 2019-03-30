@@ -1,6 +1,6 @@
 {
   "name": "react-systyle",
-  "version": "0.2.17",
+  "version": "0.3.0",
   "repository": "https://github.com/jfalxa/systyle/tree/master/packages/react-systyle",
   "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
@@ -31,7 +31,7 @@
     "rollup-plugin-node-resolve": "^4.0.1"
   },
   "dependencies": {
-    "systyle": "^2.3.12"
+    "systyle": "^2.4.0"
   },
   "peerDependencies": {
     "@emotion/core": "^10.0.10",
