@@ -52,6 +52,21 @@ const css = {
 <Styled {...css} />
 ```
 
+## Changing the rendered component
+
+In case you'd like to set which element will be rendered by a systyle component, you can define it as the `as` prop.
+
+```js
+// pass it directly as a prop
+const Text = props => <Styled as="span">some text</Styled>
+
+// or preset it
+const Text = Styled.with({ as: 'span' })
+
+// or use the shorthand
+const Text = Styled.as('span')
+```
+
 ## Setting defaults
 
 The Styled component comes with a static method `.with()` that allows you to define a more specific version of the original component.
@@ -75,6 +90,7 @@ const Square = Styled.with({
   height: 100,
   background: 'transparent'
 })
+
 const BlueSquare = Square.with({ background: 'blue' })
 ```
 
@@ -110,21 +126,6 @@ const TextContainer = Styled.with({
   <Title>title</Title>
   <Text>some text</Text>
 </TextContainer>
-```
-
-## Changing the rendered component
-
-In case you'd like to set which element will be rendered by a systyle component, you can define it as the `as` prop.
-
-```js
-// pass it directly as a prop
-const Text = props => <Styled as="span">some text</Styled>
-
-// or preset it
-const Text = Styled.with({ as: 'span' })
-
-// or use the shorthand
-const Text = Styled.as('span')
 ```
 
 ## Using a moulinette
@@ -202,77 +203,6 @@ const AsyncButton = Button.with(loader)
 // renders a disabled button with a gray background and not-allowed cursor and 'Loading...' written inside
 <AsyncButton loading fallback="Loading...">Load</AsyncButton>
 ```
-
-## Writing CSS directly
-
-Styled components also have a `.css` template string tag to help you write CSS directly.
-
-```js
-const BlueSquare = Styled.css`
-  width: 100px;
-  height: 100px;
-  background: blue;
-`
-
-// and you can add some more css on top
-const RedSquare = BlueSquare.css`
-  background: red;
-`
-```
-
-If you pass a function inside the template string, it will receive the props computed so far as parameter and the returned value will be added in the final CSS string.
-
-```js
-const ColoredSquare = Styled.css`
-  width: 100px;
-  height: 100px;
-  background: ${props => props.myColor};
-`
-
-// sets the component background to blue
-<ColoredSquare myColor="blue" />
-```
-
-Remeber that ultimately, `.css` is just a shorthand that adds a moulinette to your component, so the order matters. You won't be able to get props that are created in moulinettes that were defined before, only from those that are added after.
-
-```js
-// the following code won't work
-// css is added after the insideProp prop so it will be built before
-// => inside the function, props.insideProp will be undefined
-
-const BlueSquare = Styled.with({ insideProp: 'blue' }).css`
-    width: 100px;
-    height: 100px;
-    background: ${props => props.insideProp};
-  `
-
-// to fix it, define insideProp after the css
-const BlueSquare = Styled.css`
-    width: 100px;
-    height: 100px;
-    background: ${props => props.insideProp};
-  `.with({ insideProp: 'blue' })
-```
-
-## Animating components
-
-Systyle comes with an `.animate()` method that's a shortand to bind animations to your components.
-It takes 2 parameters: the animation settings and the animatino name
-
-```js
-import { keyframes } from '@emotion/core'
-import Styled from 'systyle'
-
-const SlideUp = Styled.animate(
-  '2s ease-out',
-  keyframes`
-  from { transform: translate3d(0, 100%, 0); }
-  to { transform: translate3d(0, 0, 0); }
-`
-)
-```
-
-Calling `.animate()` on an already animated component won't overwrite the previously defined animation. Instead, the animations will stack in the order they were added.
 
 ## Prop aliases
 
@@ -391,9 +321,9 @@ In your theme, you can define a set of breakpoints indexed by a unique name. You
 ```js
 const theme = {
   breakpoints: {
-    mobile: 0,
-    tablet: 600,
-    desktop: 1200
+    mobile: `@media screen and (max-width: 320px)`,
+    tablet: 600, // @media screen and (min-width: 600px)
+    desktop: '70em' // @media screen and (min-width: 70em)
   }
 }
 ```

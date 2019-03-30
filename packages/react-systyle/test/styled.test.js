@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import * as renderer from 'react-test-renderer'
 import serializer from 'jest-emotion'
 import { ThemeContext } from '@emotion/core'
@@ -12,7 +12,7 @@ Styled.className = 'styled'
 
 it('creates an already usable systyle component', () => {
   const styled = renderer.create(<Styled>content</Styled>)
-  const element = styled.toJSON()!
+  const element = styled.toJSON()
 
   expect(element.type).toBe('div')
   expect(element.props.className).toBe(Styled.toString().slice(1))

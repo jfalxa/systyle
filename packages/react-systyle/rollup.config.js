@@ -1,22 +1,24 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
-import typescript from 'rollup-plugin-typescript2'
+import babel from 'rollup-plugin-babel'
+import filesize from 'rollup-plugin-filesize'
 
 const pkg = require('./package.json')
 
 export default {
-  input: 'src/index.tsx',
+  input: 'src/index.js',
 
   output: [
     { file: pkg.main, name: 'react-systyle', format: 'umd' },
     { file: pkg.module, format: 'es' }
   ],
 
-  external: ['tslib', 'react', 'react-dom', '@emotion/core', 'systyle'],
+  external: ['react', '@emotion/core'],
 
   plugins: [
     resolve(),
     commonjs({ include: 'node_modules/**' }),
-    typescript({ cacheRoot: '/tmp/.rpt2-cache' })
+    babel({ exclude: 'node_modules/**' }),
+    filesize()
   ]
 }

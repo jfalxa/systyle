@@ -12,7 +12,7 @@ exports[`sets styling props 1`] = `
 }
 
 <div
-  className="styled emotion-0"
+  className="suu7zrf782uf emotion-0"
   id="styled"
 >
   content
@@ -25,6 +25,6 @@ exports[`uses emotion theme context 1`] = `
 }
 
 <div
-  className="styled emotion-0"
+  className="suu7zrf782uf emotion-0"
 />
 `;
