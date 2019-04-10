@@ -1,10 +1,12 @@
 # React-Systyle
 
-A thin layer on top of your components to quickly build design systems with `emotion`.
+A thin layer on top of your React components to quickly build design systems with `emotion`.
 
 ## Installation
 
-`npm install react-systyle`
+You will need `react` and `emotion`
+
+`npm install react-systyle @emotion/core`
 
 ## Using the Styled component
 
@@ -153,6 +155,7 @@ const Toggle = Styled
 <Toggle />
 
 // will render a green square with a pointer cursor
+// `active` was removed from the props in setActiveStyle so it won't end up in the DOM
 <Toggle active />
 ```
 
@@ -177,6 +180,8 @@ function styleDisabled({ disabled, ...props }) {
 
 function loader({ loading, disabled, children, fallback = '...', ...props }) {
   return {
+    ...props,
+
     // set disable here so that styleDisabled can use it to generate the right style after
     disabled: loading || disabled,
 
@@ -388,20 +393,20 @@ const App = props => (
 )
 ```
 
-The only exception being for styling props that tend to vary a lot between different uses of a same component, like margins:
+The only exception being for styling props that tend to vary often between different uses of a same component, like margins:
 
 ```js
-const Row = System.with({ display: 'flex' })
+const Row = Container.with({ flexDirection: 'row' })
 
 const App = props => (
   <Container>
     <Title mb={16}>Hi</Title>
 
-    <Container flexDirection="row">
+    <Row>
       <Text>A</Text>
       <Text mx={8}>B</Text>
       <Text>C</Text>
-    </Container>
+    </Row>
 
     <Text mt={16}>D</Text>
   </Container>
